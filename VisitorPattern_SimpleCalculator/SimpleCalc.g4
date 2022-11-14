@@ -5,9 +5,9 @@ compileUnit : (expr ';')+ ;
 
 expr : NUMBER                   #NUMBER
      | IDENTIFIER               #IDENTIFIER
-     | IDENTIFIER '=' expr      #Assignment
-     | expr op=(PLUS|'-') expr  #AddSub
      | expr op=('*'|DIV) expr   #MulDiv
+     | expr op=(PLUS|'-') expr  #AddSub
+     | IDENTIFIER '=' expr      #Assignment       
      | LP expr RP               #Paren
      ;
      
