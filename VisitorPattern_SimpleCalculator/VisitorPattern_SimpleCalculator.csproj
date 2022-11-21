@@ -9,15 +9,20 @@
 
     <ItemGroup>
       <PackageReference Include="Antlr4.Runtime.Standard" Version="4.11.1" />
+      <PackageReference Include="Antlr4BuildTasks" Version="12.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="obj\SimpleCalcBaseListener.cs" />
-      <Compile Include="obj\SimpleCalcBaseVisitor.cs" />
-      <Compile Include="obj\SimpleCalcLexer.cs" />
-      <Compile Include="obj\SimpleCalcListener.cs" />
-      <Compile Include="obj\SimpleCalcParser.cs" />
-      <Compile Include="obj\SimpleCalcVisitor.cs" />
+      <Antlr4 Include="SimpleCalc.g4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="obj\Debug\net6.0\SimpleCalcBaseListener.cs" />
+      <Compile Include="obj\Debug\net6.0\SimpleCalcBaseVisitor.cs" />
+      <Compile Include="obj\Debug\net6.0\SimpleCalcLexer.cs" />
+      <Compile Include="obj\Debug\net6.0\SimpleCalcListener.cs" />
+      <Compile Include="obj\Debug\net6.0\SimpleCalcParser.cs" />
+      <Compile Include="obj\Debug\net6.0\SimpleCalcVisitor.cs" />
     </ItemGroup>
 
 </Project>

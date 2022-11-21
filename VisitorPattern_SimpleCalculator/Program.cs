@@ -11,3 +11,5 @@ SimpleCalcParser parser = new SimpleCalcParser(tokens);
 IParseTree tree =parser.compileUnit();
 STPrinterVisitor visitor = new STPrinterVisitor();
 visitor.Visit(tree);
+ASTGenerationVisitor visitor1= new ASTGenerationVisitor();
+visitor1.Visit(tree);

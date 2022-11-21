@@ -14,17 +14,7 @@ namespace VisitorPattern_SimpleCalculator {
         NT_ASSIGNMENT
     }
 
-    public static class SimpleCalcExtensions {
-        public static NodeType GetNodeType(this ASTNode node) {
-            return (NodeType)node.MType;
-        }
-
-        public static void VisitNode(this AbstractParseTreeVisitor<int> visitor,
-            ParserRuleContext parent,int context) {
-
-        }
-    }
-
+    
     public class CompileUnit : ASTComposite {
         public const int EXPRESSIONS = 0;
         
@@ -80,6 +70,4 @@ namespace VisitorPattern_SimpleCalculator {
             base(strliteral, (int)NodeType.NT_NUMBER, mParent) {
         }
     }
-
-
 }

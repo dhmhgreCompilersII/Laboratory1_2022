@@ -37,6 +37,9 @@ namespace VisitorPattern_SimpleCalculator {
         public ASTComposite(int contexts,int mType, ASTComposite mParent) :
             base(mType, mParent) {
             m_children = new List<ASTNode>[contexts];
+            for (int i = 0; i < contexts; i++) {
+                m_children[i] = new List<ASTNode>();
+            }
         }
 
         public ASTNode GetChild(int context, int index = 0) {

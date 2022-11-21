@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VisitorPattern_SimpleCalculator": {
+      "commandName": "Project",
+      "commandLineArgs": "input.txt"
+    }
+  }
+}

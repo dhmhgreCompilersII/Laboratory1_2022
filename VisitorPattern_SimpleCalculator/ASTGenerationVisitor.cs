@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Tree;
+using static SimpleCalcParser;
 
 namespace VisitorPattern_SimpleCalculator {
     internal class ASTGenerationVisitor : SimpleCalcBaseVisitor<int> {
@@ -20,13 +21,14 @@ namespace VisitorPattern_SimpleCalculator {
 
             // Step 3: Add to parents
             m_parentsStack.Push(newNode);
-            m_contextsStack.Push(CompileUnit.EXPRESSIONS);
 
             // Step 4: Visit children
-            base.VisitCompileUnit(context);
+            this.VisitElementsInContext(context.expr(), CompileUnit.EXPRESSIONS,
+                m_contextsStack);
 
+            // Step 4: pop from parents stack
             m_parentsStack.Pop();
-            m_contextsStack.Pop();
+            
             return 0;
         }
 
@@ -44,13 +46,12 @@ namespace VisitorPattern_SimpleCalculator {
             m_parentsStack.Push(newNode);
             
             // Step 4: Visit children
-            m_contextsStack.Push(Assignment.IDENTIFIER);
-            Visit(context.IDENTIFIER());
-            m_contextsStack.Pop();
+            this.VisitTerminalInContext(context,context.IDENTIFIER().Symbol,
+                Assignment.IDENTIFIER, m_contextsStack);
 
-            m_contextsStack.Push(Assignment.EXPRESSION);
-            Visit(context.expr());
-            m_contextsStack.Pop();
+            this.VisitElementInContext(context.expr(), Assignment.EXPRESSION,
+                m_contextsStack);
+            
            
             m_parentsStack.Pop();
             return 0;
@@ -70,34 +71,106 @@ namespace VisitorPattern_SimpleCalculator {
                     // Step 3: Add to parents
                     m_parentsStack.Push(newNode);
                     // Step 4: Visit children
-                    m_contextsStack.Push(Addition.LEFT);
-                    Visit(context.expr(0));
-                    m_contextsStack.Pop();
+                    this.VisitElementInContext(context.expr(0),
+                        Addition.LEFT, m_contextsStack);
 
-                    m_contextsStack.Push(Addition.RIGHT);
-                    Visit(context.expr(1));
-                    m_contextsStack.Pop();
+                    this.VisitElementInContext(context.expr(1),
+                        Addition.RIGHT, m_contextsStack);
 
                     m_parentsStack.Pop();
                     break;
                 case SimpleCalcLexer.MINUS:
                     // Step 1 : Create Node
                     newNode = new Subtraction(parent);
+
+                    // Step 2: Add to parent
+                    parent.AddChild(parentContext, newNode);
+
+                    // Step 3: Add to parents
+                    m_parentsStack.Push(newNode);
+
+                    // Step 4: Visit children
+                    this.VisitElementInContext(context.expr(0),
+                        Subtraction.LEFT, m_contextsStack);
+
+                    this.VisitElementInContext(context.expr(1),
+                        Subtraction.RIGHT, m_contextsStack);
+
+                    m_parentsStack.Pop();
                     break;
             }
-            
-            
-
-            
             return 0;
         }
 
         public override int VisitMulDiv(SimpleCalcParser.MulDivContext context) {
-            return base.VisitMulDiv(context);
+            ASTComposite parent = m_parentsStack.Peek();
+            int parentContext = m_contextsStack.Peek();
+            ASTComposite newNode = null;
+            switch (context.op.Type) {
+                case SimpleCalcLexer.MULT:
+                    // Step 1 : Create Node
+                    newNode = new Addition(parent);
+                    // Step 2: Add to parent
+                    parent.AddChild(parentContext, newNode);
+
+                    // Step 3: Add to parents
+                    m_parentsStack.Push(newNode);
+                    // Step 4: Visit children
+                    this.VisitElementInContext(context.expr(0),
+                        Multiplication.LEFT, m_contextsStack);
+
+                    this.VisitElementInContext(context.expr(1),
+                        Multiplication.RIGHT, m_contextsStack);
+
+                    m_parentsStack.Pop();
+                    break;
+                case SimpleCalcLexer.DIV:
+                    // Step 1 : Create Node
+                    newNode = new Subtraction(parent);
+
+                    // Step 2: Add to parent
+                    parent.AddChild(parentContext, newNode);
+
+                    // Step 3: Add to parents
+                    m_parentsStack.Push(newNode);
+
+                    // Step 4: Visit children
+                    this.VisitElementInContext(context.expr(0),
+                        Division.LEFT, m_contextsStack);
+
+                    this.VisitElementInContext(context.expr(1),
+                        Division.RIGHT, m_contextsStack);
+
+                    m_parentsStack.Pop();
+                    break;
+            }
+
+            return 0;
         }
 
         public override int VisitTerminal(ITerminalNode node) {
-            return base.VisitTerminal(node);
+            ASTComposite parent=m_parentsStack.Peek();
+            int parentContext = m_contextsStack.Peek();
+            switch (node.Symbol.Type) {
+                case SimpleCalcLexer.IDENTIFIER:
+                    // Step 1 : Create Node
+                    IDENTIFIER newnode1 = new IDENTIFIER(node.Symbol.Text,parent);
+
+                    // Step 2: Add to parent
+                    parent.AddChild(parentContext, newnode1);
+                    
+                    break;
+                case SimpleCalcLexer.NUMBER:
+                    // Step 1 : Create Node
+                    NUMBER newnode2 = new NUMBER(node.Symbol.Text, parent);
+
+                    // Step 2: Add to parent
+                    parent.AddChild(parentContext, newnode2);
+                    
+                    break;
+            }
+
+            return 0;
         }
     }
 }
