@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Antlr4.Runtime.Tree;
 
 namespace VisitorPattern_SimpleCalculator {
-    public abstract class ASTNode {
+    public interface IASTNode {
+        Return Accept<Return>(IASTBaseVisitor<Return> v, params object[] info);
+    }
+
+    public abstract class ASTNode : IASTNode {
         private int m_type;
         private int m_serialNumber;
         private string m_nodeName;
@@ -26,12 +32,19 @@ namespace VisitorPattern_SimpleCalculator {
             m_type = mType;
             m_parent = mParent;
         }
+
+        public abstract Return Accept<Return>(IASTBaseVisitor<Return> v,
+            params object[] info);
     }
 
-    public abstract class ASTComposite : ASTNode {
+    public interface IASTComposite : IEnumerable<IASTNode> {
+
+    }
+    
+    public abstract class ASTComposite : ASTNode, IASTComposite {
 
         List<ASTNode> []m_children;
-
+        
         public int MContexts => m_children.Length;
 
         public ASTComposite(int contexts,int mType, ASTComposite mParent) :
@@ -42,12 +55,59 @@ namespace VisitorPattern_SimpleCalculator {
             }
         }
 
+        public int GetNumberOfContextNode(int context) {
+            if (context < m_children.Length) {
+                return m_children[context].Count;
+            }
+            else {
+                throw new ArgumentOutOfRangeException("context index out of range");
+            }
+        }
+
+        public IEnumerable<ASTNode> GetContextChildren(int context) {
+            if (context < m_children.Length) {
+                foreach (ASTNode node in m_children[context]) {
+                    yield return node;
+                }
+            } else {
+                throw new ArgumentOutOfRangeException("node index out of range");
+            }
+        }
+
+        public IEnumerable<ASTNode> GetChildren() {
+            foreach (ASTNode node in this) {
+                yield return node;
+            }
+        }
+
         public ASTNode GetChild(int context, int index = 0) {
-            return m_children[context][index];
+            if (context < m_children.Length) {
+                if (context < m_children[context].Count) {
+                    return m_children[context][index];
+                }
+                else {
+                    throw new ArgumentOutOfRangeException("node index out of range");
+                }
+            }
+            else {
+                throw new ArgumentOutOfRangeException("context index out of range");
+            }
         }
 
         public void AddChild(int context, ASTNode child) {
-            m_children[context].Add(child);
+            if (context < m_children.Length) {
+                m_children[context].Add(child);
+            } else {
+                throw new ArgumentOutOfRangeException("context index out of range");
+            }
+        }
+
+        public IEnumerator<IASTNode> GetEnumerator() {
+            return new ASTCompositeEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
     }
 
