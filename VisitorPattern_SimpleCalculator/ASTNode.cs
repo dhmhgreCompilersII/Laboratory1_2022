@@ -34,8 +34,11 @@ namespace VisitorPattern_SimpleCalculator {
             params Params[] info);
     }
 
+    public interface IASTComposite : IEnumerable<IASTNode> {
+
+    }
     
-    public abstract class ASTComposite : ASTNode {
+    public abstract class ASTComposite : ASTNode, IASTComposite {
 
         List<ASTNode> []m_children;
         
