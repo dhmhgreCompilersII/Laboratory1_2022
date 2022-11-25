@@ -5,27 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace VisitorPattern_SimpleCalculator {
-    public interface IASTBaseVisitor<Return> {
-        Return Visit(IASTNode node, params object[] info);
-        Return VisitChildren(IEnumerable<IASTNode> children, params object[] info);
-    }
+    
 
-    public abstract class ASTBaseVisitor<Return> : IASTBaseVisitor<Return> {
+    public abstract class ASTBaseVisitor<Return,Params> : IASTBaseVisitor<Return,Params> {
 
         // Visit a specific node and send a variable number of
         // arguments. The responsibility of the type and sequence
         // of arguments is on the user. ( box/unboxing for scalars)
-        public virtual Return Visit(IASTNode node, params object[] info) {
-            return node.Accept<Return>(this);
+        public virtual Return Visit(IASTNode node, params Params[] info) {
+            return node.Accept<Return,Params>(this);
         }
 
         // Visit the children of a specific node and summarize the 
         // results by the visiting each child 
-        public virtual Return VisitChildren(IEnumerable<IASTNode> children, params object[] info) {
+        public virtual Return VisitChildren(IEnumerable<IASTNode> children, params Params[] info) {
             Return result = default(Return);
             Return iResult;
             foreach (IASTNode astNode in children) {
-                iResult= astNode.Accept<Return>(this);
+                iResult= astNode.Accept<Return,Params>(this);
                 result = Summarize(iResult,result);
             }
             return result;

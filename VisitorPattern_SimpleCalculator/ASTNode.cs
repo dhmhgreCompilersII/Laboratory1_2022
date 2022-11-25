@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 using Antlr4.Runtime.Tree;
 
 namespace VisitorPattern_SimpleCalculator {
-    public interface IASTNode {
-        Return Accept<Return>(IASTBaseVisitor<Return> v, params object[] info);
-    }
-
+    
     public abstract class ASTNode : IASTNode {
         private int m_type;
         private int m_serialNumber;
@@ -33,15 +30,12 @@ namespace VisitorPattern_SimpleCalculator {
             m_parent = mParent;
         }
 
-        public abstract Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info);
+        public abstract Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
+            params Params[] info);
     }
 
-    public interface IASTComposite : IEnumerable<IASTNode> {
-
-    }
     
-    public abstract class ASTComposite : ASTNode, IASTComposite {
+    public abstract class ASTComposite : ASTNode {
 
         List<ASTNode> []m_children;
         

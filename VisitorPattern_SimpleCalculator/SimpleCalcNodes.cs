@@ -21,9 +21,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(1, (int)NodeType.NT_COMPILEUNIT, null) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return,Params> visitor = v as SimpleCalcVisitor<Return,Params>;
             return visitor.VisitCompileUnit(this);
         }
     }
@@ -35,9 +35,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(2, (int)NodeType.NT_ADDITION, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitAddition(this);
         }
     }
@@ -48,9 +48,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(2, (int)NodeType.NT_SUBTRACTION, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitSubtraction(this);
         }
     }
@@ -61,9 +61,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(2, (int)NodeType.NT_MULTIPLICATION, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitMultiplication(this);
         }
     }
@@ -74,9 +74,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(2, (int)NodeType.NT_DIVISION, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitDivision(this);
         }
     }
@@ -87,9 +87,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(2, (int)NodeType.NT_ASSIGNMENT, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitAssignment(this);
         }
     }
@@ -100,9 +100,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(strliteral,(int)NodeType.NT_VARIABLE, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitIDENTIFIER(this);
         }
     }
@@ -111,9 +111,9 @@ namespace VisitorPattern_SimpleCalculator {
             base(strliteral, (int)NodeType.NT_NUMBER, mParent) {
         }
 
-        public override Return Accept<Return>(IASTBaseVisitor<Return> v,
-            params object[] info) {
-            SimpleCalcVisitor<Return> visitor = v as SimpleCalcVisitor<Return>;
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            SimpleCalcVisitor<Return, Params> visitor = v as SimpleCalcVisitor<Return, Params>;
             return visitor.VisitNUMBER(this);
         }
     }
