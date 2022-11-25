@@ -18,16 +18,10 @@ namespace VisitorPattern_SimpleCalculator {
 
             // Step 2: Update root
             m_root = newNode;
-
-            // Step 3: Add to parents
-            m_parentsStack.Push(newNode);
-
-            // Step 4: Visit children
+            
+            // Step 3: Visit children
             this.VisitElementsInContext(context.expr(), CompileUnit.EXPRESSIONS,
-                m_contextsStack);
-
-            // Step 4: pop from parents stack
-            m_parentsStack.Pop();
+                m_contextsStack,newNode,m_parentsStack);
             
             return 0;
         }
@@ -41,20 +35,15 @@ namespace VisitorPattern_SimpleCalculator {
 
             // Step 2: Add to parent
             parent.AddChild(parentContext,newNode);
-            
-            // Step 3: Add to parents
-            m_parentsStack.Push(newNode);
-            
-            // Step 4: Visit children
+           
+            // Step 3: Visit children
             this.VisitTerminalInContext(context,context.IDENTIFIER().Symbol,
-                Assignment.IDENTIFIER, m_contextsStack);
+                Assignment.IDENTIFIER, m_contextsStack,newNode);
 
             this.VisitElementInContext(context.expr(), Assignment.EXPRESSION,
-                m_contextsStack);
+                m_contextsStack, newNode, m_parentsStack);
             
-           
-            m_parentsStack.Pop();
-            return 0;
+           return 0;
         }
 
         public override int VisitAddSub(SimpleCalcParser.AddSubContext context) {
@@ -68,16 +57,16 @@ namespace VisitorPattern_SimpleCalculator {
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
 
-                    // Step 3: Add to parents
-                    m_parentsStack.Push(newNode);
-                    // Step 4: Visit children
+                    // Step 3: Visit children
                     this.VisitElementInContext(context.expr(0),
-                        Addition.LEFT, m_contextsStack);
+                        Addition.LEFT, m_contextsStack,
+                         newNode, m_parentsStack);
 
                     this.VisitElementInContext(context.expr(1),
-                        Addition.RIGHT, m_contextsStack);
+                        Addition.RIGHT, m_contextsStack,
+                        newNode, m_parentsStack);
 
-                    m_parentsStack.Pop();
+                   
                     break;
                 case SimpleCalcLexer.MINUS:
                     // Step 1 : Create Node
@@ -86,17 +75,16 @@ namespace VisitorPattern_SimpleCalculator {
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
 
-                    // Step 3: Add to parents
-                    m_parentsStack.Push(newNode);
-
-                    // Step 4: Visit children
+                   // Step 3: Visit children
                     this.VisitElementInContext(context.expr(0),
-                        Subtraction.LEFT, m_contextsStack);
+                        Subtraction.LEFT, m_contextsStack,
+                        newNode, m_parentsStack);
 
                     this.VisitElementInContext(context.expr(1),
-                        Subtraction.RIGHT, m_contextsStack);
+                        Subtraction.RIGHT, m_contextsStack,
+                        newNode, m_parentsStack);
 
-                    m_parentsStack.Pop();
+                    
                     break;
             }
             return 0;
@@ -113,16 +101,16 @@ namespace VisitorPattern_SimpleCalculator {
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
 
-                    // Step 3: Add to parents
-                    m_parentsStack.Push(newNode);
-                    // Step 4: Visit children
+                   // Step 3: Visit children
                     this.VisitElementInContext(context.expr(0),
-                        Multiplication.LEFT, m_contextsStack);
+                        Multiplication.LEFT, m_contextsStack,
+                        newNode, m_parentsStack);
 
                     this.VisitElementInContext(context.expr(1),
-                        Multiplication.RIGHT, m_contextsStack);
+                        Multiplication.RIGHT, m_contextsStack,
+                        newNode, m_parentsStack);
 
-                    m_parentsStack.Pop();
+                   
                     break;
                 case SimpleCalcLexer.DIV:
                     // Step 1 : Create Node
@@ -130,18 +118,17 @@ namespace VisitorPattern_SimpleCalculator {
 
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
-
-                    // Step 3: Add to parents
-                    m_parentsStack.Push(newNode);
-
-                    // Step 4: Visit children
+                    
+                    // Step 3: Visit children
                     this.VisitElementInContext(context.expr(0),
-                        Division.LEFT, m_contextsStack);
+                        Division.LEFT, m_contextsStack,
+                        newNode, m_parentsStack);
 
                     this.VisitElementInContext(context.expr(1),
-                        Division.RIGHT, m_contextsStack);
+                        Division.RIGHT, m_contextsStack,
+                        newNode, m_parentsStack);
 
-                    m_parentsStack.Pop();
+                    
                     break;
             }
 

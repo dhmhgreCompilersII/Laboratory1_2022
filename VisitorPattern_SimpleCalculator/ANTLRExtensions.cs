@@ -24,33 +24,42 @@ namespace VisitorPattern_SimpleCalculator {
             return null;
         }
         public static Result VisitElementInContext<Result>(this AbstractParseTreeVisitor<Result> t,
-            ParserRuleContext node, int context, Stack<int> contextsStack) {
+            ParserRuleContext node, int context, Stack<int> contextsStack,
+            ASTComposite parent,Stack<ASTComposite> parentStack) {
             Result res = default(Result);
 
+            parentStack.Push(parent);
             contextsStack.Push(context);
             res = t.Visit(node);     // Visits a particular element
             contextsStack.Pop();
+            parentStack.Pop();
 
             return res;
         }
 
         public static Result VisitElementsInContext<Result>(this AbstractParseTreeVisitor<Result> t,
-            IEnumerable<IParseTree> nodeset, int context, Stack<int> contextsStack) {
+            IEnumerable<IParseTree> nodeset, int context, Stack<int> contextsStack,
+            ASTComposite parent, Stack<ASTComposite> parentsStack) {
             Result res = default(Result);
 
+            parentsStack.Push(parent);
             contextsStack.Push(context);
             foreach (IParseTree node in nodeset) {
                 res = t.Visit(node);
             }
             contextsStack.Pop();
+            parentsStack.Pop();
             return res;
         }
 
         public static Result VisitTerminalInContext<Result>(this AbstractParseTreeVisitor<Result> t,
-            ParserRuleContext tokenParent, IToken node, int context, Stack<int> s)  {
+            ParserRuleContext tokenParent, IToken node, int context, Stack<int> s,
+            ASTComposite parent, Stack<ASTComposite> parentStack)  {
+            parentStack.Push(parent);
             s.Push(context);
             Result res = t.Visit(GetTerminalNode<Result>(t, tokenParent, node));
             s.Pop();
+            parentStack.Pop();
             return res;
         }
     }
