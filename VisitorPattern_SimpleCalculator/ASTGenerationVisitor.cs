@@ -38,7 +38,7 @@ namespace VisitorPattern_SimpleCalculator {
            
             // Step 3: Visit children
             this.VisitTerminalInContext(context,context.IDENTIFIER().Symbol,
-                Assignment.IDENTIFIER, m_contextsStack,newNode);
+                Assignment.IDENTIFIER, m_contextsStack,newNode,m_parentsStack);
 
             this.VisitElementInContext(context.expr(), Assignment.EXPRESSION,
                 m_contextsStack, newNode, m_parentsStack);
