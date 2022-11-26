@@ -25,4 +25,12 @@
       <Compile Include="obj\Debug\net6.0\SimpleCalcVisitor.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="bin\Debug\net6.0\AST.gif" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="bin\Debug\net6.0\ast.dot" />
+    </ItemGroup>
+
 </Project>

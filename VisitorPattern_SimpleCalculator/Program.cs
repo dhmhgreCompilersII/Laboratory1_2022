@@ -13,3 +13,5 @@ STPrinterVisitor visitor = new STPrinterVisitor();
 visitor.Visit(tree);
 ASTGenerationVisitor visitor1= new ASTGenerationVisitor();
 visitor1.Visit(tree);
+ASTPrinterVisitor visitor2 = new ASTPrinterVisitor("ast.dot");
+visitor2.Visit(visitor1.Root);

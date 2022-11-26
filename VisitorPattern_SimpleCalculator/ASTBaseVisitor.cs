@@ -22,7 +22,7 @@ namespace VisitorPattern_SimpleCalculator {
             Return result = default(Return);
             Return iResult;
             foreach (IASTNode astNode in children) {
-                iResult= astNode.Accept<Return,Params>(this);
+                iResult= astNode.Accept<Return,Params>(this,info);
                 result = Summarize(iResult,result);
             }
             return result;

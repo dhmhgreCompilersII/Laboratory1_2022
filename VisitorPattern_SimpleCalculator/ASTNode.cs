@@ -8,18 +8,21 @@ using Antlr4.Runtime.Tree;
 
 namespace VisitorPattern_SimpleCalculator {
     
-    public abstract class ASTNode : IASTNode {
+    public abstract class ASTNode : IASTNode, ILabelled {
         private int m_type;
         private int m_serialNumber;
-        private string m_nodeName;
+        // open for modification by subclasses
+        protected string m_nodeName;
         private ASTComposite m_parent;
         private static int ms_serialCounter;
         
         public int MType => m_type;
 
-        public int MSerialNumber => m_serialNumber;
+        // Node label is open for changes as is virtual
+        public virtual int MSerialNumber => m_serialNumber;
 
-        public string MNodeName => m_nodeName;
+        // Node label is open for changes as is virtual
+        public virtual string MNodeName => m_nodeName;
 
         public ASTComposite MParent => m_parent;
 
@@ -28,16 +31,16 @@ namespace VisitorPattern_SimpleCalculator {
         public ASTNode(int mType, ASTComposite mParent) {
             m_type = mType;
             m_parent = mParent;
+            m_serialNumber = ms_serialCounter++;
+            m_nodeName = "Node" +GetType().Name +m_serialNumber;
         }
-
+        
         public abstract Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
             params Params[] info);
+        
     }
 
-    public interface IASTComposite : IEnumerable<IASTNode> {
-
-    }
-    
+   
     public abstract class ASTComposite : ASTNode, IASTComposite {
 
         List<ASTNode> []m_children;
@@ -79,7 +82,7 @@ namespace VisitorPattern_SimpleCalculator {
 
         public ASTNode GetChild(int context, int index = 0) {
             if (context < m_children.Length) {
-                if (context < m_children[context].Count) {
+                if (index < m_children[context].Count) {
                     return m_children[context][index];
                 }
                 else {
@@ -107,7 +110,7 @@ namespace VisitorPattern_SimpleCalculator {
             return GetEnumerator();
         }
     }
-
+    
     public abstract class ASTLeaf : ASTNode {
         private string m_stringLiteral;
 

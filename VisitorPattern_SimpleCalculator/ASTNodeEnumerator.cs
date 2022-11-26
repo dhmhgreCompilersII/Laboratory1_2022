@@ -15,6 +15,7 @@ namespace VisitorPattern_SimpleCalculator {
 
         public ASTCompositeEnumerator(ASTComposite sourceNode) {
             m_sourceNode = sourceNode;
+            mi_curNode = -1;
         }
 
         public IASTNode Current => m_curNode;

@@ -11,6 +11,11 @@ namespace VisitorPattern_SimpleCalculator {
         private ASTNode m_root;
         private Stack<ASTComposite> m_parentsStack = new Stack<ASTComposite>();
         private Stack<int> m_contextsStack = new Stack<int>();
+
+        public ASTNode Root {
+            get => m_root;
+        }
+
         public override int VisitCompileUnit(SimpleCalcParser.CompileUnitContext context) {
 
             // Step 1 : Create Node

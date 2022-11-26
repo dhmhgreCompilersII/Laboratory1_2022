@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace VisitorPattern_SimpleCalculator {
 
+    public interface ILabelled {
+        string MNodeName { get; }
+    }
+
     public interface IASTNode {
         Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v, params Params[] info);
+    }
+
+    public interface IASTComposite : IEnumerable<IASTNode> {
+
     }
 
     public interface IASTBaseVisitor<Return, Params> {
