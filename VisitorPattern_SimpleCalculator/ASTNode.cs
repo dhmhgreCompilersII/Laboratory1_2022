@@ -8,7 +8,7 @@ using Antlr4.Runtime.Tree;
 
 namespace VisitorPattern_SimpleCalculator {
     
-    public abstract class ASTNode : IASTNode, ILabelled {
+    public abstract class ASTNode : IASTVisitableNode, ILabelled {
         private int m_type;
         private int m_serialNumber;
         // open for modification by subclasses
@@ -37,10 +37,8 @@ namespace VisitorPattern_SimpleCalculator {
         
         public abstract Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
             params Params[] info);
-        
     }
 
-   
     public abstract class ASTComposite : ASTNode, IASTComposite {
 
         List<ASTNode> []m_children;
@@ -55,7 +53,7 @@ namespace VisitorPattern_SimpleCalculator {
             }
         }
 
-        public int GetNumberOfContextNode(int context) {
+        public int GetNumberOfContextNodes (int context) {
             if (context < m_children.Length) {
                 return m_children[context].Count;
             }
@@ -102,13 +100,22 @@ namespace VisitorPattern_SimpleCalculator {
             }
         }
 
-        public IEnumerator<IASTNode> GetEnumerator() {
+        public IEnumerator<IASTVisitableNode> GetEnumerator() {
             return new ASTCompositeEnumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
+
+        public ASTChildrenIterator CreateIterator() {
+            return new ASTChildrenIterator(this);
+        }
+
+        public ASTContextIterator CreateContextIterator(int context) {
+            return new ASTContextIterator(this,context);
+        }
+
     }
     
     public abstract class ASTLeaf : ASTNode {

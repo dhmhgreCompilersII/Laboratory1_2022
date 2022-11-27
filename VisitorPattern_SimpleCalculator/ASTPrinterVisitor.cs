@@ -37,7 +37,7 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
 
-        public override int VisitCompileUnit(ASTNode node, params ASTNode[] args) {
+        public override int VisitCompileUnit(CompileUnit node, params ASTNode[] args) {
             CompileUnit n = node as CompileUnit;
             if (n == null) {
                 throw new InvalidCastException("Expected CompileUnit type");
@@ -62,7 +62,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitAssignment(ASTNode node, params ASTNode[] args) {
+        public override int VisitAssignment(Assignment node, params ASTNode[] args) {
             Assignment n = node as Assignment;
             if (n == null) {
                 throw new InvalidCastException("Expected Assignment type");
@@ -81,7 +81,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitAddition(ASTNode node, params ASTNode[] args) {
+        public override int VisitAddition(Addition node, params ASTNode[] args) {
             Addition n = node as Addition;
             if (n == null) {
                 throw new InvalidCastException("Expected Addition type");
@@ -99,7 +99,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitSubtraction(ASTNode node, params ASTNode[] args) {
+        public override int VisitSubtraction(Subtraction node, params ASTNode[] args) {
             Subtraction n = node as Subtraction;
             if (n == null) {
                 throw new InvalidCastException("Expected Subtraction type");
@@ -117,7 +117,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitMultiplication(ASTNode node, params ASTNode[] args) {
+        public override int VisitMultiplication(Multiplication node, params ASTNode[] args) {
             Multiplication n = node as Multiplication;
             if (n == null) {
                 throw new InvalidCastException("Expected Multiplication type");
@@ -135,7 +135,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitDivision(ASTNode node, params ASTNode[] args) {
+        public override int VisitDivision(Division node, params ASTNode[] args) {
             Division n = node as Division;
             if (n == null) {
                 throw new InvalidCastException("Expected Division type");
@@ -153,7 +153,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitIDENTIFIER(ASTNode node, params ASTNode[] args) {
+        public override int VisitIDENTIFIER(IDENTIFIER node, params ASTNode[] args) {
             IDENTIFIER n = node as IDENTIFIER;
             if (n == null) {
                 throw new InvalidCastException("Expected IDENTIFIER type");
@@ -163,7 +163,7 @@ namespace VisitorPattern_SimpleCalculator {
             return 0;
         }
 
-        public override int VisitNUMBER(ASTNode node, params ASTNode[] args) {
+        public override int VisitNUMBER(NUMBER node, params ASTNode[] args) {
             NUMBER n = node as NUMBER;
             if (n == null) {
                 throw new InvalidCastException("Expected NUMBER type");

@@ -6,69 +6,65 @@ using System.Threading.Tasks;
 
 namespace VisitorPattern_SimpleCalculator {
     public class SimpleCalcVisitor<Result,Params> : ASTBaseVisitor<Result,Params> {
-        
-        public virtual Result VisitCompileUnit(ASTNode node, params Params[] args) {
-            CompileUnit cu = node as CompileUnit;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
+
+
+        public virtual Result VisitContextChildren(ASTComposite node, int context,
+            params Params[] info) {
+            Result result = default(Result);
+            Result iResult;
+            ASTContextIterator it = node.CreateContextIterator(context);
+            ASTNode astNode;
+            for (it.Init(); it.End() == false; it.Next()) {
+                astNode = it.MCurNode;
+                iResult = astNode.Accept<Result, Params>(this, info);
+                result = Summarize(iResult, result);
             }
-            else {
-                throw new InvalidCastException("parameter must be CompileUnit");
-            }
+            return result;
         }
 
-        public virtual Result VisitAddition(ASTNode node, params Params[] args) {
-            Addition cu = node as Addition;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
-            } else {
-                throw new InvalidCastException("parameter must be Addition");
+        public override Result VisitChildren(IASTComposite node, params Params[] info) {
+            ASTComposite n = node as ASTComposite;
+            Result result = default(Result);
+            Result iResult;
+            ASTChildrenIterator it = n.CreateIterator();
+            ASTNode astNode;
+            for (it.Init(); it.End() == false; it.Next()) {
+                astNode = it.MCurNode;
+                iResult = astNode.Accept<Result, Params>(this, info);
+                result = Summarize(iResult, result);
             }
+            return result;
         }
 
-        public virtual Result VisitSubtraction(ASTNode node,params Params[] args) {
-            Subtraction cu = node as Subtraction;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
-            } else {
-                throw new InvalidCastException("parameter must be Subtraction");
-            }
+        public virtual Result VisitCompileUnit(CompileUnit node, params Params[] args) {
+            return VisitChildren(node,args);
         }
 
-        public virtual Result VisitMultiplication(ASTNode node, params Params[] args) {
-            Multiplication cu = node as Multiplication;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
-            } else {
-                throw new InvalidCastException("parameter must be Multiplication");
-            }
+        public virtual Result VisitAddition(Addition node, params Params[] args) {
+            return VisitChildren(node, args);
         }
 
-        public virtual Result VisitDivision(ASTNode node, params Params[] args) {
-            Division cu = node as Division;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
-            } else {
-                throw new InvalidCastException("parameter must be Multiplication");
-            }
+        public virtual Result VisitSubtraction(Subtraction node,params Params[] args) {
+            return VisitChildren(node, args);
         }
 
-        public virtual Result VisitAssignment(ASTNode node, params Params[] args) {
-            Assignment cu = node as Assignment;
-            if (cu != null) {
-                return VisitChildren(cu.GetChildren(),args);
-            } else {
-                throw new InvalidCastException("parameter must be Multiplication");
-            }
+        public virtual Result VisitMultiplication(Multiplication node, params Params[] args) {
+            return VisitChildren(node, args);
         }
 
-        public virtual Result VisitIDENTIFIER(ASTNode node, params Params[] args) {
-            IDENTIFIER cu = node as IDENTIFIER;
+        public virtual Result VisitDivision(Division node, params Params[] args) {
+            return VisitChildren(node, args);
+        }
+
+        public virtual Result VisitAssignment(Assignment node, params Params[] args) {
+            return VisitChildren(node, args);
+        }
+
+        public virtual Result VisitIDENTIFIER(IDENTIFIER node, params Params[] args) {
             return default(Result);
         }
 
-        public virtual Result VisitNUMBER(ASTNode node, params Params[] args) {
-            NUMBER cu = node as NUMBER;
+        public virtual Result VisitNUMBER(NUMBER node, params Params[] args) {
             return default(Result);
         }
     }
