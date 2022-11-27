@@ -12,7 +12,7 @@ namespace VisitorPattern_SimpleCalculator {
             params Params[] info) {
             Result result = default(Result);
             Result iResult;
-            ASTContextIterator it = node.CreateContextIterator(context);
+            IASTIterator it = node.CreateContextIterator(context);
             ASTNode astNode;
             for (it.Init(); it.End() == false; it.Next()) {
                 astNode = it.MCurNode;
@@ -26,7 +26,7 @@ namespace VisitorPattern_SimpleCalculator {
             ASTComposite n = node as ASTComposite;
             Result result = default(Result);
             Result iResult;
-            ASTChildrenIterator it = n.CreateIterator();
+            IASTIterator it = n.CreateIterator();
             ASTNode astNode;
             for (it.Init(); it.End() == false; it.Next()) {
                 astNode = it.MCurNode;

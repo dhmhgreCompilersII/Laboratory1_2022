@@ -108,14 +108,13 @@ namespace VisitorPattern_SimpleCalculator {
             return GetEnumerator();
         }
 
-        public ASTChildrenIterator CreateIterator() {
+        public IASTIterator CreateIterator() {
             return new ASTChildrenIterator(this);
         }
 
-        public ASTContextIterator CreateContextIterator(int context) {
+        public IASTIterator CreateContextIterator(int context) {
             return new ASTContextIterator(this,context);
         }
-
     }
     
     public abstract class ASTLeaf : ASTNode {
