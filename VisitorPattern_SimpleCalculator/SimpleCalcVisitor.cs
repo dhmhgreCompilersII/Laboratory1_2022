@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace VisitorPattern_SimpleCalculator {
     public class SimpleCalcVisitor<Result,Params> : ASTBaseVisitor<Result,Params> {
-
-
+        
         public virtual Result VisitContextChildren(ASTComposite node, int context,
             params Params[] info) {
             Result result = default(Result);

@@ -8,14 +8,26 @@ using Antlr4.Runtime.Tree;
 
 namespace VisitorPattern_SimpleCalculator {
     
-    public abstract class ASTNode : IASTVisitableNode, ILabelled {
+    public  class ASTNode : IASTVisitableNode, ILabelled {
         private int m_type;
         private int m_serialNumber;
         // open for modification by subclasses
         protected string m_nodeName;
         private ASTComposite m_parent;
         private static int ms_serialCounter;
-        
+        // Either will use this member or there has to be
+        // a static dictionary to map ASTNode to the corresponding
+        // link hierarchy node. Trees have many applications 
+        // most of the times they extend to an application domain
+        // So this link is necessary.
+        private object m_hierarchyBridgeLink;
+
+        public object HierarchyBridgeLink {
+            get => m_hierarchyBridgeLink;
+            set => m_hierarchyBridgeLink = value ??
+                throw new ArgumentNullException(nameof(value));
+        }
+
         public int MType => m_type;
 
         // Node label is open for changes as is virtual
@@ -34,12 +46,14 @@ namespace VisitorPattern_SimpleCalculator {
             m_serialNumber = ms_serialCounter++;
             m_nodeName = "Node" +GetType().Name +m_serialNumber;
         }
-        
-        public abstract Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
-            params Params[] info);
+
+        public virtual Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
+            params Params[] info) {
+            return v.Visit(this);
+        }
     }
 
-    public abstract class ASTComposite : ASTNode, IASTComposite {
+    public class ASTComposite : ASTNode, IASTComposite {
 
         List<ASTNode> []m_children;
         
@@ -115,9 +129,14 @@ namespace VisitorPattern_SimpleCalculator {
         public IASTIterator CreateContextIterator(int context) {
             return new ASTContextIterator(this,context);
         }
+
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return,
+            Params> v, params Params[] info) {
+            return v.Visit(this, info);
+        }
     }
     
-    public abstract class ASTLeaf : ASTNode {
+    public class ASTLeaf : ASTNode {
         private string m_stringLiteral;
 
         public string MStringLiteral => m_stringLiteral;
@@ -125,6 +144,10 @@ namespace VisitorPattern_SimpleCalculator {
         public ASTLeaf(string leafLiteral,int mType, ASTComposite mParent) :
             base(mType, mParent) {
             m_stringLiteral=leafLiteral;
+        }
+        public override Return Accept<Return, Params>(IASTBaseVisitor<Return,
+            Params> v, params Params[] info) {
+            return v.Visit(this, info);
         }
     }
 }
