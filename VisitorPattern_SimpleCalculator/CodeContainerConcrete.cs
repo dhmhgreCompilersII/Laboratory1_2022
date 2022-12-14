@@ -71,8 +71,8 @@ namespace VisitorPattern_SimpleCalculator {
             ExtractSubgraphs(m_ostream, PREPROCESSOR_DIRECTIVES);
             ExtractSubgraphs(m_ostream, FUNCTION_DEFINITIONS);
 
-            foreach (ASTNode child in TreeNode) {
-                (child.HierarchyBridgeLink as CEmmitableCodeContainer).PrintStructure(m_ostream);
+            foreach (CEmmitableCodeContainer child in MChildren) {
+                child.PrintStructure(m_ostream);
             }
 
             m_ostream.WriteLine("}");
@@ -151,18 +151,13 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public override void PrintStructure(StreamWriter m_ostream) {
-            CEmmitableCodeContainer childContainer;
             ExtractSubgraphs(m_ostream, BODY);
             ExtractSubgraphs(m_ostream, HEADER);
-
-
-            foreach (ASTNode child in TreeNode) {
-                childContainer = child.HierarchyBridgeLink as CEmmitableCodeContainer;
-                childContainer.PrintStructure(m_ostream);
+            
+            foreach (CEmmitableCodeContainer child in MChildren) {
+                child.PrintStructure(m_ostream);
             }
-
-
-            m_ostream.WriteLine("\"{0}\"->\"{1}\"", M_ASTNode.MParent.MNodeName, M_ASTNode.MNodeName);
+            m_ostream.WriteLine("\"{0}\"->\"{1}\"", MParentMNodeName, MNodeName);
         }
     }
 
@@ -205,14 +200,13 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public override void PrintStructure(StreamWriter m_ostream) {
-            CEmmitableCodeContainer childContainer;
+            
             ExtractSubgraphs(m_ostream, BODY);
             ExtractSubgraphs(m_ostream, DECLARATIONS);
-            foreach (ASTNode child in TreeNode) {
-                childContainer = child.HierarchyBridgeLink as CEmmitableCodeContainer;
-                childContainer.PrintStructure(m_ostream);
+            foreach (CEmmitableCodeContainer child in MChildren) {
+                child.PrintStructure(m_ostream);
             }
-            m_ostream.WriteLine("\"{0}\"->\"{1}\"", M_ASTNode.MParent.MNodeName, M_ASTNode.MNodeName);
+            m_ostream.WriteLine("\"{0}\"->\"{1}\"", MParentMNodeName, MNodeName);
         }
     }
 }

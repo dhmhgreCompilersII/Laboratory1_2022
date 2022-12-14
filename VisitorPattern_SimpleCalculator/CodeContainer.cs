@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public abstract ASTNode M_ASTNode { get; }
+
+        protected string MNodeName => M_ASTNode.MNodeName;
+        protected string MParentMNodeName => M_ASTNode.MParent.MNodeName;
 
         public CEmmitableCodeContainer() {
             
@@ -51,6 +55,14 @@ namespace VisitorPattern_SimpleCalculator {
         public ASTComposite TreeNode => m_treeNode;
 
         public override ASTNode M_ASTNode => m_treeNode;
+
+        public IEnumerable<CEmmitableCodeContainer> MChildren  {
+            get{
+                foreach (ASTNode child in TreeNode) {
+                    yield return child.HierarchyBridgeLink as CEmmitableCodeContainer;
+                }
+            }
+        }
 
         public CComboContainer(int contexts,int type, CComboContainer parent) {
             m_treeNode = new ASTComposite(contexts, type,parent?.TreeNode??null);
