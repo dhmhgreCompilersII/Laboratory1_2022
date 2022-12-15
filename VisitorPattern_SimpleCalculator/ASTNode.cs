@@ -40,11 +40,14 @@ namespace VisitorPattern_SimpleCalculator {
 
         public static int MsSerialCounter => ms_serialCounter;
 
-        public ASTNode(int mType, ASTComposite mParent) {
+        public ASTNode(int mType) {
             m_type = mType;
-            m_parent = mParent;
             m_serialNumber = ms_serialCounter++;
             m_nodeName = "Node" +GetType().Name +m_serialNumber;
+        }
+
+        public virtual void SetParent(ASTComposite parent) {
+            m_parent = parent;
         }
 
         public virtual Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -59,8 +62,8 @@ namespace VisitorPattern_SimpleCalculator {
         
         public int MContexts => m_children.Length;
 
-        public ASTComposite(int contexts,int mType, ASTComposite mParent) :
-            base(mType, mParent) {
+        public ASTComposite(int contexts,int mType) :
+            base(mType) {
             m_children = new List<ASTNode>[contexts];
             for (int i = 0; i < contexts; i++) {
                 m_children[i] = new List<ASTNode>();
@@ -109,6 +112,7 @@ namespace VisitorPattern_SimpleCalculator {
         public void AddChild(int context, ASTNode child) {
             if (context < m_children.Length) {
                 m_children[context].Add(child);
+                child.SetParent(this);
             } else {
                 throw new ArgumentOutOfRangeException("context index out of range");
             }
@@ -141,8 +145,8 @@ namespace VisitorPattern_SimpleCalculator {
 
         public string MStringLiteral => m_stringLiteral;
 
-        public ASTLeaf(string leafLiteral,int mType, ASTComposite mParent) :
-            base(mType, mParent) {
+        public ASTLeaf(string leafLiteral,int mType) :
+            base(mType) {
             m_stringLiteral=leafLiteral;
         }
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return,

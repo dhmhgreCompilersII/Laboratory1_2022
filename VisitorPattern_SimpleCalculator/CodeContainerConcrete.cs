@@ -30,7 +30,7 @@ namespace VisitorPattern_SimpleCalculator {
             CodeContainer rep;
             if (!m_globalVarSymbolTable.Contains(varname)) {
                 m_globalVarSymbolTable.Add(varname);
-                rep = new CodeContainer(-1, this);
+                rep = new CodeContainer(-1);
                 rep.AddCode("float " + varname + ";\n", GLOBAL_VARIABLES);
                 AddCode(rep, GLOBAL_VARIABLES);
             }
@@ -39,14 +39,15 @@ namespace VisitorPattern_SimpleCalculator {
         public void DeclareFunction(string funname, string funheader) {
             CodeContainer rep;
             if (!m_FunctionsSymbolTable.Contains(funname)) {
-                rep = new CodeContainer(-1, this);
+                rep = new CodeContainer(-1);
                 m_globalVarSymbolTable.Add(funname);
                 rep.AddCode(funheader + ";\n", GLOBAL_VARIABLES);
                 AddCode(rep, GLOBAL_VARIABLES);
             }
         }
 
-        public CCFile(bool withStartUpFunction) : base(3, (int)ContainerType.CT_FILE, null) {
+        public CCFile(bool withStartUpFunction) : 
+            base(3, (int)ContainerType.CT_FILE) {
 
             if (withStartUpFunction) {
                 m_mainDefinition = new CMainFunctionDefinition(this);
@@ -55,7 +56,7 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public override CodeContainer AssemblyCodeContainer() {
-            CodeContainer rep = new CodeContainer(-1, null);
+            CodeContainer rep = new CodeContainer(-1);
 
             rep.AddCode(AssemblyContext(PREPROCESSOR_DIRECTIVES), -1);
             rep.AddCode(AssemblyContext(GLOBAL_VARIABLES), -1);
@@ -97,8 +98,6 @@ namespace VisitorPattern_SimpleCalculator {
                 exitCode = proc.ExitCode;
             }
         }
-
-
     }
     public class CCFunctionDefinition : CComboContainer {
         public const int HEADER = 0, BODY = 1;
@@ -115,13 +114,11 @@ namespace VisitorPattern_SimpleCalculator {
                 if (isread) {
                     m_file.DeclareGlobalVariable(varname);
                 } else {
-                    rep = new CodeContainer(-1, this);
+                    rep = new CodeContainer(-1);
                     m_localSymbolTable.Add(varname);
 
                     rep.AddCode("float " + varname + ";\n", -1);
-                    CCompoundStatement compoundst = TreeNode.
-                        GetChild(BODY, 0).
-                        HierarchyBridgeLink as CCompoundStatement;
+                    CCompoundStatement compoundst = GetChild(BODY, 0) as CCompoundStatement;
                     compoundst.AddCode(rep, CCompoundStatement.DECLARATIONS);
                 }
             }
@@ -134,12 +131,12 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public CCFunctionDefinition(CComboContainer parent) :
-            base(2, (int)ContainerType.CT_FUNDEF, parent) {
+            base(2, (int)ContainerType.CT_FUNDEF) {
             m_file = parent as CCFile;
         }
 
         public override CodeContainer AssemblyCodeContainer() {
-            CodeContainer rep = new CodeContainer(-1, null);
+            CodeContainer rep = new CodeContainer(-1);
             // 1. Emmit Header
             rep.AddCode(AssemblyContext(HEADER), -1);
 
@@ -170,7 +167,7 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public override void DeclareVariable(string varname, bool isread) {
-            CCFile file = M_ASTNode.MParent.HierarchyBridgeLink as CCFile;
+            CCFile file = MParent as CCFile;
             file.DeclareGlobalVariable(varname);
         }
     }
@@ -181,11 +178,11 @@ namespace VisitorPattern_SimpleCalculator {
         public readonly string[] mc_contextNames =
             { "CompoundStatement_Declarations", "CompoundStatement_Body"};
         public CCompoundStatement(CComboContainer parent) :
-            base(2, (int)ContainerType.CT_COMPOUNDSTATEMENT, parent) {
+            base(2, (int)ContainerType.CT_COMPOUNDSTATEMENT) {
         }
 
         public override CodeContainer AssemblyCodeContainer() {
-            CodeContainer rep = new CodeContainer(-1,null );
+            CodeContainer rep = new CodeContainer(-1 );
             rep.AddCode("{",-1);
             rep.EnterScope();
             rep.AddCode("//  ***** Local declarations *****",-1);

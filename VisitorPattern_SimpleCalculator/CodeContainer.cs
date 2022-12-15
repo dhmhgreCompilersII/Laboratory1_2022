@@ -36,7 +36,6 @@ namespace VisitorPattern_SimpleCalculator {
         public virtual void EnterScope() {
             m_nestingLevel++;
         }
-
         public virtual void LeaveScope() {
             if (m_nestingLevel > 0) {
                 m_nestingLevel--;
@@ -44,7 +43,6 @@ namespace VisitorPattern_SimpleCalculator {
                 throw new Exception("Non-matched nesting");
             }
         }
-
         public abstract void AddNewLine(int context);
     }
 
@@ -52,45 +50,52 @@ namespace VisitorPattern_SimpleCalculator {
         private ASTComposite m_treeNode;
         private static int ms_clusterSerial = 0;
 
-        public ASTComposite TreeNode => m_treeNode;
-
         public override ASTNode M_ASTNode => m_treeNode;
+
+        public CEmmitableCodeContainer MParent {
+            get {
+                return M_ASTNode.MParent.HierarchyBridgeLink as CEmmitableCodeContainer;
+            }
+        }
 
         public IEnumerable<CEmmitableCodeContainer> MChildren  {
             get{
-                foreach (ASTNode child in TreeNode) {
+                foreach (ASTNode child in m_treeNode) {
                     yield return child.HierarchyBridgeLink as CEmmitableCodeContainer;
                 }
             }
         }
 
-        public CComboContainer(int contexts,int type, CComboContainer parent) {
-            m_treeNode = new ASTComposite(contexts, type,parent?.TreeNode??null);
+        public CComboContainer(int contexts,int type) {
+            m_treeNode = new ASTComposite(contexts, type);
+            m_treeNode.HierarchyBridgeLink = this;
         }
 
         protected virtual CodeContainer AssemblyContext(int ct) {
-            CodeContainer rep = new CodeContainer(-1, this);
+            CodeContainer rep = new CodeContainer(-1);
             for (int i = 0; i < m_treeNode.GetNumberOfContextNodes(ct); i++) {
-                ASTNode child = m_treeNode.GetChild(ct, i);
-                CEmmitableCodeContainer x = 
-                    child.HierarchyBridgeLink as CEmmitableCodeContainer;
+                CEmmitableCodeContainer x = GetChild(ct, i); ;
                 rep.AddCode(x.AssemblyCodeContainer(),ct);
             }
             return rep;
         }
 
+        public virtual CEmmitableCodeContainer GetChild(int context, int index=0) {
+            return m_treeNode.GetChild(context, index).HierarchyBridgeLink as CEmmitableCodeContainer;
+        }
+
         public override void AddCode(string code, int context) {
-            CodeContainer container = new CodeContainer(-1, this);
+            CodeContainer container = new CodeContainer(-1);
             container.AddCode(code, -1);
             m_treeNode.AddChild(context,container.TreeNode);
         }
 
-        public override void AddCode(CEmmitableCodeContainer code, int context) {
+        public override void AddCode(CEmmitableCodeContainer code, int context=1) {
             m_treeNode.AddChild(context, code.M_ASTNode);
         }
 
-        public override void AddNewLine(int context) {
-            CodeContainer container = new CodeContainer(-1, this);
+        public override void AddNewLine(int context=-1) {
+            CodeContainer container = new CodeContainer(-1);
             container.AddNewLine(-1);
             m_treeNode.AddChild(context, container.TreeNode);
         }
@@ -138,8 +143,9 @@ namespace VisitorPattern_SimpleCalculator {
 
         public override ASTNode M_ASTNode =>m_treeNode;
 
-        public CodeContainer(int type, CComboContainer parent) {
-            m_treeNode = new ASTLeaf(String.Empty,  type, parent?.TreeNode?? null);
+        public CodeContainer(int type) {
+            m_treeNode = new ASTLeaf(String.Empty,type);
+            m_treeNode.HierarchyBridgeLink = this;
         }
 
         public override void AddCode(string code, int context) {

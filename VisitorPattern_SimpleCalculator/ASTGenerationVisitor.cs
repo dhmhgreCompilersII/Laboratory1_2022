@@ -36,7 +36,7 @@ namespace VisitorPattern_SimpleCalculator {
             int parentContext = m_contextsStack.Peek();
 
             // Step 1 : Create Node
-            Assignment newNode= new Assignment(parent);
+            Assignment newNode= new Assignment();
 
             // Step 2: Add to parent
             parent.AddChild(parentContext,newNode);
@@ -58,7 +58,7 @@ namespace VisitorPattern_SimpleCalculator {
             switch (context.op.Type) {
                 case SimpleCalcLexer.PLUS:
                     // Step 1 : Create Node
-                    newNode = new Addition(parent);
+                    newNode = new Addition();
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
 
@@ -75,7 +75,7 @@ namespace VisitorPattern_SimpleCalculator {
                     break;
                 case SimpleCalcLexer.MINUS:
                     // Step 1 : Create Node
-                    newNode = new Subtraction(parent);
+                    newNode = new Subtraction();
 
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
@@ -102,7 +102,7 @@ namespace VisitorPattern_SimpleCalculator {
             switch (context.op.Type) {
                 case SimpleCalcLexer.MULT:
                     // Step 1 : Create Node
-                    newNode = new Addition(parent);
+                    newNode = new Multiplication();
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
 
@@ -119,7 +119,7 @@ namespace VisitorPattern_SimpleCalculator {
                     break;
                 case SimpleCalcLexer.DIV:
                     // Step 1 : Create Node
-                    newNode = new Subtraction(parent);
+                    newNode = new Division();
 
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newNode);
@@ -146,7 +146,7 @@ namespace VisitorPattern_SimpleCalculator {
             switch (node.Symbol.Type) {
                 case SimpleCalcLexer.IDENTIFIER:
                     // Step 1 : Create Node
-                    IDENTIFIER newnode1 = new IDENTIFIER(node.Symbol.Text,parent);
+                    IDENTIFIER newnode1 = new IDENTIFIER(node.Symbol.Text);
 
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newnode1);
@@ -154,7 +154,7 @@ namespace VisitorPattern_SimpleCalculator {
                     break;
                 case SimpleCalcLexer.NUMBER:
                     // Step 1 : Create Node
-                    NUMBER newnode2 = new NUMBER(node.Symbol.Text, parent);
+                    NUMBER newnode2 = new NUMBER(node.Symbol.Text);
 
                     // Step 2: Add to parent
                     parent.AddChild(parentContext, newnode2);

@@ -19,7 +19,7 @@ namespace VisitorPattern_SimpleCalculator {
         public readonly string []mc_contextNames = { "Expressions" };
         
         public CompileUnit( ) : 
-            base(1, (int)NodeType.NT_COMPILEUNIT, null) {
+            base(1, (int)NodeType.NT_COMPILEUNIT) {
         }
 
         public override Return Accept<Return,Params>(IASTBaseVisitor<Return,Params> v,
@@ -33,8 +33,8 @@ namespace VisitorPattern_SimpleCalculator {
         public const int LEFT = 0, RIGHT=1;
         public readonly string[] mc_contextNames = { "Left", "Right" };
 
-        public Addition(ASTComposite mParent) :
-            base(2, (int)NodeType.NT_ADDITION, mParent) {
+        public Addition() :
+            base(2, (int)NodeType.NT_ADDITION) {
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -47,8 +47,8 @@ namespace VisitorPattern_SimpleCalculator {
         public const int LEFT = 0, RIGHT = 1;
         public readonly string[] mc_contextNames = { "Left", "Right" };
 
-        public Subtraction(ASTComposite mParent) :
-            base(2, (int)NodeType.NT_SUBTRACTION, mParent) {
+        public Subtraction() :
+            base(2, (int)NodeType.NT_SUBTRACTION) {
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -61,8 +61,8 @@ namespace VisitorPattern_SimpleCalculator {
         public const int LEFT = 0, RIGHT = 1;
         public readonly string[] mc_contextNames = { "Left", "Right" };
 
-        public Multiplication(ASTComposite mParent) :
-            base(2, (int)NodeType.NT_MULTIPLICATION, mParent) {
+        public Multiplication() :
+            base(2, (int)NodeType.NT_MULTIPLICATION) {
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -75,8 +75,8 @@ namespace VisitorPattern_SimpleCalculator {
         public const int LEFT = 0, RIGHT = 1;
         public readonly string[] mc_contextNames = { "Left", "Right" };
 
-        public Division(ASTComposite mParent) :
-            base(2, (int)NodeType.NT_DIVISION, mParent) {
+        public Division() :
+            base(2, (int)NodeType.NT_DIVISION) {
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -89,8 +89,8 @@ namespace VisitorPattern_SimpleCalculator {
         public const int IDENTIFIER = 0, EXPRESSION = 1;
         public readonly string[] mc_contextNames = { "LValue", "Expressions" };
 
-        public Assignment(ASTComposite mParent) :
-            base(2, (int)NodeType.NT_ASSIGNMENT, mParent) {
+        public Assignment() :
+            base(2, (int)NodeType.NT_ASSIGNMENT) {
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -101,9 +101,16 @@ namespace VisitorPattern_SimpleCalculator {
     }
 
     public class IDENTIFIER : ASTLeaf {
+        private string m_text;
         
-        public IDENTIFIER(string strliteral,ASTComposite mParent) :
-            base(strliteral,(int)NodeType.NT_VARIABLE, mParent) {
+        public string M_Text {
+            get { return m_text; }
+            set { m_text = value; }
+        }
+
+        public IDENTIFIER(string strliteral) :
+            base(strliteral,(int)NodeType.NT_VARIABLE) {
+            M_Text = strliteral;
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,
@@ -113,8 +120,15 @@ namespace VisitorPattern_SimpleCalculator {
         }
     }
     public class  NUMBER : ASTLeaf {
-        public NUMBER(string strliteral, ASTComposite mParent) :
-            base(strliteral, (int)NodeType.NT_NUMBER, mParent) {
+        private string m_text;
+
+        public string M_Text {
+            get { return m_text; }
+            set { m_text = value; }
+        }
+        public NUMBER(string strliteral) :
+            base(strliteral, (int)NodeType.NT_NUMBER) {
+            M_Text = strliteral;
         }
 
         public override Return Accept<Return, Params>(IASTBaseVisitor<Return, Params> v,

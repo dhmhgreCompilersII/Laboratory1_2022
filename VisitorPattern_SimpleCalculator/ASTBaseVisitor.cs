@@ -13,7 +13,7 @@ namespace VisitorPattern_SimpleCalculator {
         // arguments. The responsibility of the type and sequence
         // of arguments is on the user. ( box/unboxing for scalars)
         public virtual Return Visit(IASTVisitableNode node, params Params[] info) {
-            return node.Accept<Return,Params>(this);
+            return node.Accept<Return,Params>(this,info);
         }
 
         // Visit the children of a specific node and summarize the 
