@@ -59,7 +59,6 @@ namespace VisitorPattern_SimpleCalculator {
                     M_ContainerFunction = mainf,
                     M_ParentContextType = CCompoundStatement.BODY
                 });
-                cmpst.AddCode(dep, CCompoundStatement.BODY);
             }
             return m_translatedFile;
         }

@@ -27,10 +27,12 @@
 
     <ItemGroup>
       <Content Include="bin\Debug\net6.0\AST.gif" />
+      <Content Include="bin\Debug\net6.0\CodeStructure.gif" />
     </ItemGroup>
 
     <ItemGroup>
       <None Include="bin\Debug\net6.0\ast.dot" />
+      <None Include="bin\Debug\net6.0\CodeStructure.dot" />
     </ItemGroup>
 
 </Project>

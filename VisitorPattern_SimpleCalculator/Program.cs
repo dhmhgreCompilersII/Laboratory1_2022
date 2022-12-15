@@ -17,3 +17,5 @@ ASTPrinterVisitor visitor2 = new ASTPrinterVisitor("ast.dot");
 visitor2.Visit(visitor1.Root);
 CalcToCTranslation cgen = new CalcToCTranslation();
 cgen.Visit(visitor1.Root);
+StreamWriter m_streamWriter = new StreamWriter("CodeStructure.dot");
+cgen.M_TranslatedFile.PrintStructure(m_streamWriter);

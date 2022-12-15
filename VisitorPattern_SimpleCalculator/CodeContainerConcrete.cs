@@ -68,9 +68,9 @@ namespace VisitorPattern_SimpleCalculator {
 
             m_ostream.WriteLine("digraph {");
 
-            ExtractSubgraphs(m_ostream, GLOBAL_VARIABLES);
-            ExtractSubgraphs(m_ostream, PREPROCESSOR_DIRECTIVES);
-            ExtractSubgraphs(m_ostream, FUNCTION_DEFINITIONS);
+            ExtractSubgraphs(m_ostream, GLOBAL_VARIABLES, mc_contextNames[GLOBAL_VARIABLES]);
+            ExtractSubgraphs(m_ostream, PREPROCESSOR_DIRECTIVES, mc_contextNames[PREPROCESSOR_DIRECTIVES]);
+            ExtractSubgraphs(m_ostream, FUNCTION_DEFINITIONS, mc_contextNames[FUNCTION_DEFINITIONS]);
 
             foreach (CEmmitableCodeContainer child in MChildren) {
                 child.PrintStructure(m_ostream);
@@ -148,8 +148,8 @@ namespace VisitorPattern_SimpleCalculator {
         }
 
         public override void PrintStructure(StreamWriter m_ostream) {
-            ExtractSubgraphs(m_ostream, BODY);
-            ExtractSubgraphs(m_ostream, HEADER);
+            ExtractSubgraphs(m_ostream, BODY, mc_contextNames[BODY]);
+            ExtractSubgraphs(m_ostream, HEADER, mc_contextNames[HEADER]);
             
             foreach (CEmmitableCodeContainer child in MChildren) {
                 child.PrintStructure(m_ostream);
@@ -198,8 +198,8 @@ namespace VisitorPattern_SimpleCalculator {
 
         public override void PrintStructure(StreamWriter m_ostream) {
             
-            ExtractSubgraphs(m_ostream, BODY);
-            ExtractSubgraphs(m_ostream, DECLARATIONS);
+            ExtractSubgraphs(m_ostream, BODY, mc_contextNames[BODY]);
+            ExtractSubgraphs(m_ostream, DECLARATIONS, mc_contextNames[DECLARATIONS]);
             foreach (CEmmitableCodeContainer child in MChildren) {
                 child.PrintStructure(m_ostream);
             }

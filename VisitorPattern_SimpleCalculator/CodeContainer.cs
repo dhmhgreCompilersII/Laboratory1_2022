@@ -115,7 +115,7 @@ namespace VisitorPattern_SimpleCalculator {
             f.WriteLine(s);
         }
 
-        protected void ExtractSubgraphs(StreamWriter m_ostream, int context) {
+        protected void ExtractSubgraphs(StreamWriter m_ostream, int context,string contextName) {
             int contextNodes = m_treeNode.GetNumberOfContextNodes(context);
             ASTNode child;
             if (contextNodes!=0) {
@@ -124,12 +124,12 @@ namespace VisitorPattern_SimpleCalculator {
                 m_ostream.WriteLine("\t\tstyle=filled;");
                 m_ostream.WriteLine("\t\tcolor=lightgrey;");
                 m_ostream.Write("\t\t");
-                for (int i = 0; i < context; i++) {
+                for (int i = 0; i < contextNodes; i++) {
                     child = m_treeNode.GetChild(context, i);
                     m_ostream.Write(child.MNodeName + ";");
                 }
 
-                m_ostream.WriteLine("\n\t\tlabel=" + context + ";");
+                m_ostream.WriteLine("\n\t\tlabel=" + contextName + ";");
                 m_ostream.WriteLine("\t}");
             }
         }
