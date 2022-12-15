@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <None Include="bin\Debug\net6.0\ast.dot" />
+      <None Include="bin\Debug\net6.0\CGenerated.c" />
       <None Include="bin\Debug\net6.0\CodeStructure.dot" />
     </ItemGroup>
 

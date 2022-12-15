@@ -59,13 +59,15 @@ namespace VisitorPattern_SimpleCalculator {
                     M_ContainerFunction = mainf,
                     M_ParentContextType = CCompoundStatement.BODY
                 });
+                dep.AddCode(";\n",-1);
+                cmpst.AddCode(dep, CCompoundStatement.BODY);
             }
             return m_translatedFile;
         }
 
         public override CEmmitableCodeContainer VisitAddition(Addition node, params TranslationParameters[] args) {
             CodeContainer rep = new CodeContainer(-1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
+            //args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             rep.AddCode(Visit(node.GetChild(Addition.LEFT, 0), new TranslationParameters() {
                 M_ContainerFunction = args[0].M_ContainerFunction,
                 M_Parent = null,
@@ -82,7 +84,7 @@ namespace VisitorPattern_SimpleCalculator {
 
         public override CEmmitableCodeContainer VisitSubtraction(Subtraction node, params TranslationParameters[] args) {
             CodeContainer rep = new CodeContainer(-1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
+            //args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             rep.AddCode(Visit(node.GetChild(Subtraction.LEFT, 0), new TranslationParameters() {
                 M_ContainerFunction = args[0].M_ContainerFunction,
                 M_Parent = null,
@@ -99,7 +101,7 @@ namespace VisitorPattern_SimpleCalculator {
 
         public override CEmmitableCodeContainer VisitMultiplication(Multiplication node, params TranslationParameters[] args) {
             CodeContainer rep = new CodeContainer(-1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
+            //args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             rep.AddCode(Visit(node.GetChild(Multiplication.LEFT, 0), new TranslationParameters() {
                 M_ContainerFunction = args[0].M_ContainerFunction,
                 M_Parent = null,
@@ -116,7 +118,7 @@ namespace VisitorPattern_SimpleCalculator {
 
         public override CEmmitableCodeContainer VisitDivision(Division node, params TranslationParameters[] args) {
             CodeContainer rep = new CodeContainer(-1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
+            //args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             rep.AddCode(Visit(node.GetChild(Division.LEFT, 0), new TranslationParameters() {
                 M_ContainerFunction = args[0].M_ContainerFunction,
                 M_Parent = null,
@@ -135,7 +137,7 @@ namespace VisitorPattern_SimpleCalculator {
             CCFunctionDefinition fun = args[0].M_ContainerFunction as CCFunctionDefinition;
 
             CodeContainer rep = new CodeContainer(-1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
+            //args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             IDENTIFIER id = node.GetChild(Assignment.IDENTIFIER, 0) as IDENTIFIER;
             fun.DeclareVariable(id.M_Text, false);
             rep.AddCode(id.M_Text, -1);
@@ -152,14 +154,12 @@ namespace VisitorPattern_SimpleCalculator {
             CodeContainer rep = new CodeContainer(-1);
             args[0].M_ContainerFunction.DeclareVariable(node.M_Text, true);
             rep.AddCode(node.M_Text, -1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             return rep;
         }
 
         public override CEmmitableCodeContainer VisitNUMBER(NUMBER node, params TranslationParameters[] args) {
             CodeContainer rep = new CodeContainer(-1);
             rep.AddCode(node.M_Text, -1);
-            args[0].M_Parent?.AddCode(rep, args[0].M_ParentContextType);
             return rep;
         }
     }

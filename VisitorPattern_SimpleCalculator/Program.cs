@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using System.Runtime.CompilerServices;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using VisitorPattern_SimpleCalculator;
@@ -19,3 +21,7 @@ CalcToCTranslation cgen = new CalcToCTranslation();
 cgen.Visit(visitor1.Root);
 StreamWriter m_streamWriter = new StreamWriter("CodeStructure.dot");
 cgen.M_TranslatedFile.PrintStructure(m_streamWriter);
+cgen.M_TranslatedFile.EmmitStdout();
+StreamWriter trFile = new StreamWriter(Path.GetFileName("CGenerated.c"));
+cgen.M_TranslatedFile.EmmitToFile(trFile);
+trFile.Close();
